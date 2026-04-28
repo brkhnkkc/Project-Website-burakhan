@@ -17,11 +17,18 @@ export const HeroSection = () => {
                 <p className="lext-lg md:text-xl text-muted-foreground max-2-2xl mx-auto oapcity-0 animate-fade-in-delay-3">
                     I am an electrical and computer engineer.
                 </p>
-                <div className="opacity-0 animate-fade-in-delay-4">
-                    <a href="#projects" className="cosmic-button">
+                <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center opacity-0 animate-fade-in-delay-4">
+                    <a href="/#about" className="cosmic-button">
+                        About me
+                    </a>
+                    <a href="/#projects" className="cosmic-button">
                         View my projects
                     </a>
+                    <a href="/#skills" className="cosmic-button">
+                        View my skills
+                    </a>
                 </div>
+                
             </div>
         </div>
     <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
