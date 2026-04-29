@@ -70,7 +70,11 @@ export const ProjectsSection = () => {
 
 
             <div className="text-center mt-12">
-                <a className="cosmic-button w-fit flex items-center mx-auto gap-2">
+                <a 
+                href="https://www.linkedin.com/in/burakhankokcu/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cosmic-button w-fit flex items-center mx-auto gap-2">
                     My LinkedIn <ArrowRight size={16} />
                 </a>
             </div>
