@@ -6,7 +6,7 @@ const projects = [
         id: 1,
         title: "Spark Logic Kit",
         description: "A unique interactive STEM kit build from from ground up to teach younger student the concepts of electrical and computer engineering",
-        image: ["/projects/R4_00634.jpg"],
+        image: ["/projects/R4_00634.png"],
         tags: ["Embedded Systems","PCB design","Python","PSpice","Fusion360","Circuit Design"],
         demoUrl: "#",
     },

@@ -8,9 +8,12 @@ const projects = [
     title: "Spark Logic Kit",
     subtitle: "Interactive STEM Education Kit",
     description:
-      "A unique interactive STEM kit built from the ground up to teach younger students the concepts of electrical and computer engineering. Designed to be hands-on and engaging, bridging the gap between theory and real-world circuit behavior.",
+      "A unique interactive STEM kit built from the ground up to teach younger students the concepts of electrical and computer engineering. Designed to be hands-on and engaging, bridging the gap between theory and real-world circuit application.",
     longDescription:
-      "Typically, students receive little to no exposure to Electrical and Computer Engineering concepts at a pre-college level. Inspired by Snap Circuits and electronics hobbyist kits, S.P.A.R.K. Logic was built to introduce computer logic without relying on existing technology or experience. The kit includes a custom-designed PCB with guided experiments, a Python-based companion app for visualizing circuit data in real time, and 3D-printed enclosures designed in Fusion 360. The entire system is built around a microcontroller that communicates with the companion software over USB.",
+      "Typically, students receive little to no exposure to Electrical and Computer Engineering concepts at a middle/high-school level. "+
+      "Inspired by Snap Circuits and digital logic test programs, S.P.A.R.K. Logic kit is built to introduce computer logic without relying on previous experience. "+
+      "The kit includes a custom-designed PCBs with guided experiments, a Python-based microcontroller for visualizing data in real time, and 3D-printed grid board and enclosures. "+
+      "The entire system is built around the logic blocks and microcontroller that .",
     images: ["/projects/R4_00634.jpg", "/projects/0001.png", "/projects/ANDLogicBrick.png", "/projects/ORLogicBrick.png", "/projects/IMG_2188.jpg"],
     captions: [
     "Final assembled kit",
@@ -21,10 +24,10 @@ const projects = [
   ],
     tags: ["Embedded Systems", "PCB Design", "Python", "PSpice", "Fusion360", "Circuit Design"],
     highlights: [
-      "Custom PCB designed from scratch with KiCad",
-      "Python GUI for real-time circuit visualization",
-      "Fusion 360 enclosure with snap-fit assembly",
-      "Suitable for students ages 10–16",
+      "Custom PCB designed from scratch with Fusion 360",
+      "Python GUI for real-time information and visualization",
+      "3D printed enclosure with snap-fit assembly",
+      "Suitable for students ages 9–18",
     ],
     category: "Hardware",
     icon: <Cpu className="h-5 w-5" />,
@@ -122,10 +125,10 @@ export const ProjectsPage = () => {
             <Wrench className="h-3 w-3" /> Engineering Portfolio
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Featured <span className="text-primary">Projects</span>
+            My <span className="text-primary">Projects</span>
           </h1>
           <p className="text-muted-foreground max-w-xl mx-auto">
-            A collection of hardware, firmware, and software projects — each built to solve a real problem or explore a new idea.
+            A collection of hardware and software projects — each built to solve a real problem or explore a new idea.
           </p>
         </div>
       </section>
