@@ -94,23 +94,23 @@ const typeColors = {
 const artworks = [
   {
     id: 1,
-    title: "Artwork Title 1",
+    title: "Atmospheric Doggo",
     hero: "/projects/digart/atmospheric440.png",
     supporting: ["/projects/digart/atmosphericBTS.png", "/projects/digart/atmosphericBTS1.png", "/projects/digart/atmosphericBTS2.png"],
-    description: "A short description of this piece and what inspired it.",
+    description: "Chatting Turtle. Inspired by leaves flying in the wind during a foggy night.",
   },
   {
     id: 2,
     title: "Artwork Title 2",
     hero: "/projects/digart/brokenWall4.png",
     supporting: ["/projects/digart/brokenWall.png", "/projects/digart/brokenWallBTS.png"],
-    description: "A short description of this piece and what inspired it.",
+    description: "A Broken Wall. Symbolizes the act of breaking walls in order to achieve success (to be free).",
   },
   {
     id: 3,
     title: "Artwork Title 3",
     hero: "/projects/digart/planet1440.png",
-    supporting: ["/art/art3_a.jpg", "/art/art3_b.jpg", "/art/art3_c.jpg"],
+    supporting: ["/projects/digart/generatedPlanet2.png", "/art/art3_b.jpg", "/art/art3_c.jpg"],
     description: "A short description of this piece and what inspired it.",
   },
   {
@@ -138,81 +138,66 @@ const artworks = [
 
 // ── Artwork viewer ────────────────────────────────────────────────────────────
 const ArtworkViewer = ({ artwork, onClose }) => {
-  const [activeSupport, setActiveSupport] = useState(0);
+  const allImages = [artwork.hero, ...artwork.supporting];
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === "Escape") onClose();
-      if (e.key === "ArrowUp" || e.key === "ArrowLeft")
-        setActiveSupport(i => (i - 1 + artwork.supporting.length) % artwork.supporting.length);
-      if (e.key === "ArrowDown" || e.key === "ArrowRight")
-        setActiveSupport(i => (i + 1) % artwork.supporting.length);
+      if (e.key === "ArrowLeft")
+        setActiveIndex(i => (i - 1 + allImages.length) % allImages.length);
+      if (e.key === "ArrowRight")
+        setActiveIndex(i => (i + 1) % allImages.length);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [artwork, onClose]);
+  }, [artwork, onClose, allImages.length]);
+
+  const prev = (e) => { e.stopPropagation(); setActiveIndex(i => (i - 1 + allImages.length) % allImages.length); };
+  const next = (e) => { e.stopPropagation(); setActiveIndex(i => (i + 1) % allImages.length); };
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/92 flex items-center justify-center p-4 md:p-8"
+      className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
       onClick={onClose}
     >
-      <button
-        onClick={onClose}
-        className="absolute top-5 right-5 p-2 text-white/60 hover:text-white transition-colors z-10"
-      >
+      {/* Close */}
+      <button onClick={onClose} className="absolute top-5 right-5 p-2 text-white/60 hover:text-white transition-colors z-10">
         <X className="h-6 w-6" />
       </button>
 
-      <div
-        className="w-full max-w-5xl flex flex-col md:flex-row gap-4 items-stretch"
-        onClick={e => e.stopPropagation()}
-      >
-        {/* Hero image */}
-        <div className="flex-1 min-h-0 flex flex-col gap-3">
-          <div className="relative rounded-xl overflow-hidden bg-white/5 flex-1" style={{ minHeight: "380px" }}>
-            <img
-              src={artwork.hero}
-              alt={artwork.title}
-              className="w-full h-full object-contain"
-            />
-          </div>
-          <div>
-            <h3 className="text-white font-semibold text-lg">{artwork.title}</h3>
-            <p className="text-white/50 text-sm mt-0.5">{artwork.description}</p>
-          </div>
-        </div>
-
-        {/* Supporting images stacked on right */}
-        {artwork.supporting.length > 0 && (
-          <div className="flex md:flex-col flex-row gap-2 md:w-40 w-full overflow-x-auto md:overflow-y-auto">
-            {artwork.supporting.map((src, i) => (
-              <div
-                key={i}
-                onClick={() => setActiveSupport(i)}
-                className={`relative flex-shrink-0 rounded-lg overflow-hidden cursor-pointer transition-all duration-200
-                  md:w-full md:h-28 w-24 h-20
-                  ${activeSupport === i ? "ring-2 ring-white/80 scale-[1.02]" : "opacity-50 hover:opacity-80"}
-                `}
-              >
-                <img src={src} alt={`Support ${i + 1}`} className="w-full h-full object-cover" />
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Active supporting image overlay when clicked */}
-      {artwork.supporting[activeSupport] && (
-        <div
-          className="absolute inset-0 z-10 flex items-center justify-center bg-black/80 p-8"
-          style={{ display: "none" }}
-        />
+      {/* Prev */}
+      {allImages.length > 1 && (
+        <button onClick={prev} className="absolute left-4 p-2 text-white/70 hover:text-white transition-colors z-10">
+          <ChevronLeft className="h-8 w-8" />
+        </button>
       )}
+
+      {/* Main image */}
+      <img
+        src={allImages[activeIndex]}
+        alt={artwork.title}
+        className="max-h-[85vh] max-w-[85vw] object-contain rounded-lg shadow-2xl"
+        onClick={e => e.stopPropagation()}
+      />
+
+      {/* Next */}
+      {allImages.length > 1 && (
+        <button onClick={next} className="absolute right-4 p-2 text-white/70 hover:text-white transition-colors z-10">
+          <ChevronRight className="h-8 w-8" />
+        </button>
+      )}
+
+      {/* Bottom info */}
+      <div className="absolute bottom-4 flex flex-col items-center gap-1.5">
+        <p className="text-white/90 text-sm bg-black/40 px-4 py-1.5 rounded-full backdrop-blur-sm">
+          {artwork.title}
+        </p>
+        <span className="text-white/50 text-xs">{activeIndex + 1} / {allImages.length}</span>
+      </div>
     </div>
   );
 };
-
 // ── Page ──────────────────────────────────────────────────────────────────────
 export const PersonalPage = () => {
   const [activeArtwork, setActiveArtwork] = useState(null);

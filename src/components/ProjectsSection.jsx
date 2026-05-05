@@ -35,7 +35,7 @@ export const ProjectsSection = () => {
                  My <span className="text-primary"> Projects </span>
             </h2>
             <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-                Here are some of the projects I worked on. 
+                Here are some of the recent projects I worked on. 
                 <p>
                 <Pointer className="inline h-5 w-5"/> Click to see more.</p>
             </p>

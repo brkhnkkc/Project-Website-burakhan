@@ -1,12 +1,16 @@
 const skills = [
-    {name: "Circuit Design", level:100, category:"tools"},
     {name: "PCB Design", level:100, category:"tools"},
-    {name: "AutoCAD", level:100, category:"tools"},
     {name: "PSpice", level:100, category:"tools"},
-
     {name: "Verilog", level:100, category:"tools"},
     {name: "AWR", level:100, category:"tools"},
+    {name: "Fusion 360", level:100, category:"tools"},
     {name: "MATLAB", level:100, category:"tools"},
+    {name: "AutoCAD", level:100, category:"tools"},
+    {name: "Circuit Design", level:100, category:"tools"},
+    {name: "Python", level:100, category:"tools"},
+    {name: "C/C++", level:100, category:"tools"},
+    {name: "Java", level:100, category:"tools"},
+    {name: "3D Design/Modelling", level:100, category:"tools"},
 ]
 
 
