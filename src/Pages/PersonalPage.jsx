@@ -78,10 +78,11 @@ const interests = [
 ];
 
 const timeline = [
-  { year: "Present", title: "Electrical & Computer Engineering", description: "Pursuing my degree with focus on embedded systems, hardware design, and firmware development.", type: "education" },
-  { year: "2024", title: "Spark Logic Kit", description: "Designed and built a complete STEM education kit from PCB to 3D-printed enclosure.", type: "project" },
-  { year: "2023", title: "Wi-Fi Smart Car", description: "Built a fully custom Wi-Fi-controlled vehicle with autonomous modes and obstacle detection.", type: "project" },
-  { year: "2022", title: "Started Engineering Journey", description: "Began diving deep into microcontrollers, circuit design, and embedded programming.", type: "milestone" },
+  { year: "Present", title: "Electrical & Computer Engineer", description: "Finished my degree with focus on embedded systems, hardware design, and firmware development.", type: "education" },
+  { year: "2025", title: "Spark Logic Kit", description: "Designed and built a complete STEM education kit from PCB to 3D-printed enclosure.", type: "project" },
+  { year: "2024", title: "Wi-Fi Smart Car", description: "Built a fully custom Wi-Fi-controlled vehicle with autonomous modes and obstacle detection.", type: "project" },
+  { year: "2023", title: "Started My Computer Engineering Journey", description: "Began diving deep into microcontrollers, circuit design, and embedded programming.", type: "milestone" },
+  { year: "2022", title: "Started My Electrical Engineering Journey", description: "Began diving deep into , circuit design, .", type: "milestone" },
 ];
 
 const typeColors = {
@@ -299,9 +300,10 @@ export const PersonalPage = () => {
                       <GraduationCap className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <h4 className="font-semibold">B.S. Electrical & Computer Engineering</h4>
-                      <p className="text-sm text-muted-foreground">Your University · Expected Graduation Year</p>
-                      <p className="text-xs text-muted-foreground mt-2">Coursework in embedded systems, digital logic, signals & systems, circuit analysis, and VLSI design.</p>
+                      <h4 className="font-semibold">B.S. Electrical Engineering</h4>
+                      <h4 className="font-semibold">B.S. Computer Engineering</h4>
+                      <p className="text-sm text-muted-foreground">North Carolina State University · 12/2025</p>
+                      <p className="text-xs text-muted-foreground mt-2">Coursework in embedded systems, digital logic, signals & systems, circuit analysis, and design.</p>
                     </div>
                   </div>
                 </div>
