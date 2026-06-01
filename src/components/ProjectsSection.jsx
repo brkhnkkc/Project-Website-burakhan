@@ -67,8 +67,6 @@ export const ProjectsSection = () => {
                     </Link>
                 ))}
             </div>
-
-
             <div className="text-center mt-12">
                 <a 
                 href="https://www.linkedin.com/in/burakhankokcu/"

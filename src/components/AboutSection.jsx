@@ -1,4 +1,4 @@
-import { Briefcase, Code, Cog, Cpu, User } from "lucide-react";
+import { ArrowRight, Briefcase, Code, Cog, Cpu, User } from "lucide-react";
 
 
 
@@ -29,6 +29,11 @@ export const AboutSection = () => {
                         </a>
                         <a href="/BurakhanKokcu_Resume.pdf" target="_blank" rel="noopener noreferrer" className="px-6 py-2 rounded-full border border-primary text-primary hover:bg-primary/10 tansition-colors duration-300">
                             Download Resume
+                        </a>
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center">
+                        <a href="https://www.linkedin.com/in/burakhankokcu/" target="_blank" rel="noopener noreferrer" className="cosmic-button w-fit flex items-center mx-auto gap-2">
+                            My LinkedIn <ArrowRight size={16} />
                         </a>
                     </div>
                 </div>
