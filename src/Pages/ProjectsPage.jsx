@@ -1,141 +1,149 @@
-import { useState } from "react";
-import { ExternalLink, Wrench } from "lucide-react";
-import { projects } from "@/data/projects";
+import { useCallback, useState } from "react";
+import { ExternalLink, Maximize2 } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { projects, categoryStyles } from "@/data/projects";
 import { Lightbox } from "@/components/Lightbox";
 import { PageHeader } from "@/components/PageHeader";
+import { SectionHeading } from "@/components/SectionHeading";
+import { StarBackground } from "@/components/StarBackground";
 
-const categoryColors = {
-  Hardware: "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/20",
-  Robotics: "bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/20",
-  Software: "bg-violet-500/10 text-violet-600 dark:text-violet-400 border-violet-500/20",
+// Large photo + thumbnail strip. Thumbnails switch the large photo; clicking it opens the lightbox.
+const ProjectGallery = ({ project, onOpen }) => {
+  const [active, setActive] = useState(0);
+  const caption = project.captions[active];
+
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={() => onOpen(active)}
+        aria-label={`Enlarge photo: ${caption ?? project.title}`}
+        className="group relative block aspect-[4/3] w-full overflow-hidden rounded-xl bg-secondary"
+      >
+        <img
+          src={project.images[active]}
+          alt={caption ?? project.title}
+          loading="lazy"
+          decoding="async"
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+        />
+        <span className="absolute right-3 top-3 rounded-full bg-black/55 p-2 text-white opacity-0 transition-opacity group-hover:opacity-100">
+          <Maximize2 className="h-4 w-4" />
+        </span>
+      </button>
+      {caption && <p className="mt-2 text-sm text-muted-foreground">{caption}</p>}
+
+      {project.images.length > 1 && (
+        <div className="mt-3 grid grid-cols-5 gap-2">
+          {project.images.map((img, i) => (
+            <button
+              key={img}
+              type="button"
+              onClick={() => setActive(i)}
+              aria-label={`Show photo: ${project.captions[i] ?? i + 1}`}
+              aria-pressed={i === active}
+              className={cn(
+                "aspect-square overflow-hidden rounded-lg border-2 transition",
+                i === active ? "border-primary" : "border-transparent opacity-70 hover:opacity-100"
+              )}
+            >
+              <img src={img} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 };
-
-const gridCols = (n) =>
-  n === 1 ? "grid-cols-1" :
-  n === 2 ? "grid-cols-2" :
-  n === 3 ? "grid-cols-3" :
-  "grid-cols-2 md:grid-cols-4";
 
 export const ProjectsPage = () => {
   const [lightbox, setLightbox] = useState(null); // { project, index }
+  const closeLightbox = useCallback(() => setLightbox(null), []);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="relative min-h-screen bg-background text-foreground">
+      <StarBackground />
       <PageHeader title="Projects" />
 
-      {/* Hero */}
-      <section className="py-16 px-4 text-center border-b border-border">
-        <div className="container mx-auto max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/30 bg-primary/5 text-primary text-xs font-medium mb-4">
-            <Wrench className="h-3 w-3" /> Engineering Portfolio
-          </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+      <main className="relative z-10 px-4 pb-20 pt-14 md:pt-20">
+        <div className="container mx-auto max-w-6xl">
+          <SectionHeading
+            as="h1"
+            label="Engineering Portfolio"
+            intro="A collection of hardware and software projects — each built to solve a real problem or explore a new idea."
+          >
             My <span className="text-primary">Projects</span>
-          </h1>
-          <p className="text-muted-foreground max-w-xl mx-auto">
-            A collection of hardware and software projects — each built to solve a real problem or explore a new idea.
-          </p>
+          </SectionHeading>
+
+          <div className="space-y-12">
+            {projects.map((project) => {
+              const Icon = project.icon;
+              return (
+                <article key={project.id} id={project.id} className="panel scroll-mt-24 overflow-hidden">
+                  {/* Pictures beside name + description */}
+                  <div className="grid gap-8 p-5 sm:p-7 lg:grid-cols-[1.15fr_1fr] lg:gap-10">
+                    <ProjectGallery
+                      project={project}
+                      onOpen={(index) => setLightbox({ project, index })}
+                    />
+
+                    <div className="flex flex-col">
+                      <div className="flex flex-wrap items-center gap-3">
+                        <span className={cn("inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium", categoryStyles[project.category])}>
+                          <Icon className="h-3.5 w-3.5" />
+                          {project.category}
+                        </span>
+                        {project.demoUrl && (
+                          <a
+                            href={project.demoUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-primary"
+                          >
+                            <ExternalLink className="h-3.5 w-3.5" /> Demo
+                          </a>
+                        )}
+                      </div>
+                      <h2 className="mt-4 text-3xl font-bold">{project.title}</h2>
+                      <p className="mt-1 font-medium text-primary">{project.subtitle}</p>
+                      <p className="mt-4 text-lg leading-relaxed text-muted-foreground">{project.description}</p>
+
+                      <div className="mt-6 flex flex-wrap gap-2">
+                        {project.tags.map((tag) => (
+                          <span key={tag} className="chip">{tag}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Details + highlights underneath */}
+                  <div className="grid gap-8 border-t border-border bg-secondary/40 p-5 sm:p-7 md:grid-cols-2">
+                    <div>
+                      <h3 className="font-mono text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                        Project Details
+                      </h3>
+                      <p className="mt-3 leading-relaxed">{project.longDescription}</p>
+                    </div>
+                    <div>
+                      <h3 className="font-mono text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                        Key Highlights
+                      </h3>
+                      <ul className="mt-3 space-y-2">
+                        {project.highlights.map((h) => (
+                          <li key={h} className="flex items-start gap-2.5 leading-relaxed">
+                            <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                            {h}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
         </div>
-      </section>
-
-      {/* Projects */}
-      <section className="py-16 px-4">
-        <div className="container mx-auto max-w-5xl space-y-10">
-          {projects.map((project) => {
-            const Icon = project.icon;
-            return (
-              <article
-                key={project.id}
-                id={project.id}
-                className="scroll-mt-20 bg-card rounded-2xl border border-border overflow-hidden shadow-sm"
-              >
-                {/* Top: title + tags + description */}
-                <div className="p-6 border-b border-border">
-                  <div className="flex flex-wrap items-center gap-3 mb-3">
-                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium border ${categoryColors[project.category]}`}>
-                      <Icon className="h-5 w-5" />
-                      {project.category}
-                    </span>
-                    {project.demoUrl && (
-                      <a
-                        href={project.demoUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors"
-                      >
-                        <ExternalLink className="h-3 w-3" /> Demo
-                      </a>
-                    )}
-                  </div>
-                  <h2 className="text-2xl font-bold mb-0.5">{project.title}</h2>
-                  <p className="text-sm text-primary mb-3">{project.subtitle}</p>
-                  <p className="text-muted-foreground text-sm leading-relaxed max-w-3xl">
-                    {project.description}
-                  </p>
-                  <div className="flex flex-wrap gap-1.5 mt-4">
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="px-2 py-0.5 text-xs rounded-full bg-secondary text-secondary-foreground border border-border"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Image grid */}
-                <div className="p-6 border-b border-border">
-                  <p className="text-xs text-muted-foreground mb-3 uppercase tracking-wide font-medium">Photos</p>
-                  <div className={`grid gap-2 ${gridCols(project.images.length)}`}>
-                    {project.images.map((img, i) => (
-                      <button
-                        key={img}
-                        type="button"
-                        onClick={() => setLightbox({ project, index: i })}
-                        aria-label={`Open photo: ${project.captions[i] ?? project.title}`}
-                        className={`relative overflow-hidden rounded-lg cursor-pointer group bg-secondary/30
-                          ${project.images.length >= 4 && i === 0 ? "col-span-2 row-span-2" : ""}
-                        `}
-                        style={{ aspectRatio: "4/3" }}
-                      >
-                        <img
-                          src={img}
-                          alt={project.captions[i] ?? `${project.title} photo ${i + 1}`}
-                          loading="lazy"
-                          decoding="async"
-                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-200" />
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Details + Highlights */}
-                <div className="p-6 grid md:grid-cols-2 gap-6">
-                  <div>
-                    <h3 className="text-sm font-semibold text-foreground mb-2">Project Details</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      {project.longDescription}
-                    </p>
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-semibold text-foreground mb-2">Key Highlights</h3>
-                    <ul className="space-y-1.5">
-                      {project.highlights.map((h) => (
-                        <li key={h} className="flex items-start gap-2 text-sm text-muted-foreground">
-                          <span className="text-primary mt-0.5">→</span> {h}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
-        </div>
-      </section>
+      </main>
 
       {lightbox && (
         <Lightbox
@@ -143,7 +151,7 @@ export const ProjectsPage = () => {
           captions={lightbox.project.captions}
           title={lightbox.project.title}
           startIndex={lightbox.index}
-          onClose={() => setLightbox(null)}
+          onClose={closeLightbox}
         />
       )}
     </div>

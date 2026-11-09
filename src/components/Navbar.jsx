@@ -7,8 +7,8 @@ import { ThemeToggle } from "./ThemeToggle";
 const navItems = [
   { name: "Home", href: "#hero", type: "anchor" },
   { name: "About", href: "#about", type: "anchor" },
-  { name: "Projects", href: "/projects", type: "link" },
   { name: "Skills", href: "#skills", type: "anchor" },
+  { name: "Projects", href: "/projects", type: "link" },
   { name: "Personal", href: "/personal", type: "link" },
 ];
 
@@ -28,7 +28,7 @@ export const Navbar = () => {
 
   const renderNavItem = (item, onClick) => {
     const className =
-      "text-foreground/80 hover:text-primary transition-colors duration-300";
+      "font-medium text-foreground/80 hover:text-primary transition-colors duration-300";
 
     // Section links (#about, #skills...)
     if (item.type === "anchor") {
@@ -58,15 +58,13 @@ export const Navbar = () => {
   return (
     <nav
       className={cn(
-        "fixed w-full z-40 transition-all duration-300",
-        isScrolled
-          ? "py-3 bg-background/80 backdrop-blur-md shadow-xs"
-          : "py-5"
+        "fixed w-full z-40 border-b transition-all duration-300 bg-background/85 backdrop-blur-md",
+        isScrolled ? "py-3 border-border shadow-sm" : "py-4 border-transparent"
       )}
     >
       <div className="container flex items-center justify-between">
         <Link
-          className="text-xl font-bold text-primary flex items-center"
+          className="font-display text-xl font-bold text-primary flex items-center"
           to="/"
         >
           <span className="relative z-10">

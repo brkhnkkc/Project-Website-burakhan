@@ -93,9 +93,9 @@ const timeline = [
 ];
 
 const typeColors = {
-  education: "bg-cyan-500/10 text-cyan-400 border-cyan-500/20",
-  project: "bg-primary/10 text-primary border-primary/20",
-  milestone: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+  education: "bg-cyan-500/10 text-cyan-700 dark:text-cyan-300 border-cyan-500/30",
+  project: "bg-primary/10 text-primary border-primary/30",
+  milestone: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/30",
 };
 
 // ── Artwork ───────────────────────────────────────────────────────────────────
@@ -140,148 +140,130 @@ export const PersonalPage = () => {
       <div className="relative z-10">
 
         {/* Hero / Identity */}
-        <section className="py-20 px-4 border-b border-border">
-          <div className="container mx-auto max-w-4xl grid md:grid-cols-[1fr_auto] gap-12 items-center">
+        <section className="px-4 pb-10 pt-14 md:pt-20">
+          <div className="panel mx-auto grid max-w-5xl items-center gap-10 p-7 sm:p-10 md:grid-cols-[1fr_auto]">
             <div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
+              <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
                 <MapPin className="h-4 w-4 text-primary" />
                 <span>Available for opportunities</span>
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-3">
+              <h1 className="mt-3 text-4xl font-bold md:text-5xl">
                 Burakhan <span className="text-primary">Kokcu</span>
               </h1>
-              <p className="text-lg text-muted-foreground mb-6">Electrical & Computer Engineer</p>
-              <p className="text-muted-foreground leading-relaxed max-w-xl">
+              <p className="mt-2 text-lg font-medium text-primary">Electrical & Computer Engineer</p>
+              <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground">
                 I'm an engineer who loves building things from the ground up — from schematic to silkscreen,
                 from firmware to front panel. I'm passionate about embedded systems, hardware design, and
                 using technology to solve problems that actually matter.
               </p>
-              <div className="flex flex-wrap gap-3 mt-6">
-                <a href={`mailto:${EMAIL}`} className="flex items-center gap-2 cosmic-button">
+              <div className="mt-7 flex flex-wrap gap-3">
+                <a href={`mailto:${EMAIL}`} className="cosmic-button">
                   <Mail className="h-4 w-4" /> Contact Me
                 </a>
-                <a href={LINKEDIN} target="_blank" rel="noreferrer"
-                  className="flex items-center gap-2 px-5 py-2 rounded-full border border-primary text-primary hover:bg-primary/10 transition-colors duration-300 text-sm font-medium">
+                <a href={LINKEDIN} target="_blank" rel="noreferrer" className="outline-button">
                   <ExternalLink className="h-4 w-4" /> LinkedIn
                 </a>
               </div>
             </div>
-            <div className="w-40 h-40 rounded-2xl overflow-hidden border-2 border-primary/30 shadow-lg mx-auto">
-              <img src="/brkhn.webp" alt="Burakhan Kokcu" className="w-full h-full object-cover" />
+            <div className="order-first mx-auto h-36 w-36 overflow-hidden rounded-2xl border-2 border-primary/30 shadow-lg md:order-none md:h-48 md:w-48">
+              <img src="/brkhn.webp" alt="Burakhan Kokcu" className="h-full w-full object-cover" />
             </div>
           </div>
         </section>
 
-        {/* What I Do */}
-        <section className="py-16 px-4 border-b border-border">
-          <div className="container mx-auto max-w-4xl">
-            <h2 className="text-2xl font-bold mb-8">What I <span className="text-primary">Do</span></h2>
-            <div className="grid md:grid-cols-3 gap-6">
-              {[
-                { title: "Hardware Design", body: "I design PCBs from scratch — schematics, layout, DRC, and fabrication. Tools include KiCad, Altium, and PSpice for simulation." },
-                { title: "Embedded Firmware", body: "I write firmware in C/C++ for microcontrollers (ESP32, STM32, Arduino). I'm comfortable with bare-metal and RTOS environments." },
-                { title: "System Thinking", body: "I think holistically about products — from power budget to mechanical enclosure to user experience. I enjoy building complete systems." },
-              ].map((item) => (
-                <div key={item.title} className="bg-card/80 backdrop-blur-sm rounded-xl border border-border p-5 card-hover">
-                  <h3 className="font-semibold text-base mb-2">{item.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{item.body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Education & Timeline */}
-        <section className="py-16 px-4 border-b border-border">
-          <div className="container mx-auto max-w-4xl grid md:grid-cols-2 gap-12">
-            <div>
-              <h2 className="text-2xl font-bold mb-8">My <span className="text-primary">Journey</span></h2>
-              <div className="relative border-l-2 border-border pl-6 space-y-8">
-                {timeline.map((item, i) => (
-                  <div key={i} className="relative">
-                    <div className="absolute -left-[29px] top-1 w-3 h-3 rounded-full bg-primary border-2 border-background" />
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className={`text-xs px-2 py-0.5 rounded-full border font-medium ${typeColors[item.type]}`}>{item.year}</span>
-                    </div>
-                    <h4 className="font-semibold text-sm">{item.title}</h4>
-                    <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{item.description}</p>
-                  </div>
+        {/* Journey + Education & Interests */}
+        <section className="px-4 py-10">
+          <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-2">
+            <div className="panel p-7 sm:p-8">
+              <p className="section-label">Timeline</p>
+              <h2 className="mt-2 text-2xl font-bold">My <span className="text-primary">Journey</span></h2>
+              <ol className="relative mt-8 space-y-8 border-l-2 border-border pl-6">
+                {timeline.map((item) => (
+                  <li key={item.title} className="relative">
+                    <span className="absolute -left-[33px] top-1.5 h-3.5 w-3.5 rounded-full border-2 border-card bg-primary" />
+                    <span className={`inline-block rounded-full border px-2.5 py-0.5 text-xs font-semibold ${typeColors[item.type]}`}>{item.year}</span>
+                    <h3 className="mt-2 text-lg font-semibold">{item.title}</h3>
+                    <p className="mt-1 leading-relaxed text-muted-foreground">{item.description}</p>
+                  </li>
                 ))}
-              </div>
+              </ol>
             </div>
-            <div className="space-y-8">
-              <div>
-                <h2 className="text-2xl font-bold mb-4"><span className="text-primary">Education</span></h2>
-                <div className="bg-card/80 backdrop-blur-sm rounded-xl border border-border p-5">
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 rounded-lg bg-primary/10">
-                      <GraduationCap className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold">B.S. Electrical Engineering</h4>
-                      <h4 className="font-semibold">B.S. Computer Engineering</h4>
-                      <p className="text-sm text-muted-foreground">North Carolina State University · 12/2025</p>
-                      <p className="text-xs text-muted-foreground mt-2">Coursework in embedded systems, digital logic, signals & systems, circuit analysis, and design.</p>
-                    </div>
+
+            <div className="flex flex-col gap-6">
+              <div className="panel p-7 sm:p-8">
+                <p className="section-label">Education</p>
+                <div className="mt-4 flex items-start gap-4">
+                  <div className="shrink-0 rounded-xl bg-primary/10 p-3">
+                    <GraduationCap className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold">B.S. Electrical Engineering</h3>
+                    <h3 className="text-lg font-semibold">B.S. Computer Engineering</h3>
+                    <p className="mt-1 text-muted-foreground">North Carolina State University · 12/2025</p>
+                    <p className="mt-3 leading-relaxed text-muted-foreground">Coursework in embedded systems, digital logic, signals & systems, circuit analysis, and design.</p>
                   </div>
                 </div>
               </div>
-              <div>
-                <h2 className="text-2xl font-bold mb-4"><span className="text-primary">Interests</span></h2>
-                <div className="space-y-3">
+
+              <div className="panel p-7 sm:p-8">
+                <p className="section-label">Interests</p>
+                <ul className="mt-4 space-y-3">
                   {interests.map((item) => (
-                    <div key={item.label} className="flex items-center gap-3 bg-card/80 backdrop-blur-sm rounded-lg border border-border px-4 py-3">
+                    <li key={item.label} className="flex items-center gap-3 rounded-xl border border-border bg-secondary/60 px-4 py-3">
                       <span className="text-primary">{item.icon}</span>
-                      <span className="text-sm">{item.label}</span>
-                    </div>
+                      <span className="font-medium">{item.label}</span>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
             </div>
           </div>
         </section>
 
         {/* Digital Artwork Gallery */}
-        <section className="py-16 px-4 border-b border-border">
-          <div className="w-full px-4">
-          <h2 className="text-2xl font-bold mb-2 text-center">Digital <span className="text-primary">Artwork</span></h2>
-          <p className="text-sm text-muted-foreground mb-8 text-center">Click any piece to explore it in detail.</p>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 w-full">
+        <section className="px-4 py-10">
+          <div className="panel mx-auto max-w-5xl p-7 sm:p-8">
+            <div className="text-center">
+              <p className="section-label">Gallery</p>
+              <h2 className="mt-2 text-2xl font-bold md:text-3xl">Digital <span className="text-primary">Artwork</span></h2>
+              <p className="mt-2 text-muted-foreground">Click any piece to explore it in detail.</p>
+            </div>
+            <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
               {artworks.map((artwork) => (
-                <button
-                  type="button"
-                  key={artwork.id}
-                  onClick={() => setActiveArtwork(artwork)}
-                  aria-label={`Open artwork: ${artwork.title}`}
-                  style={{ aspectRatio: "1/1" }}
-                  className="relative group cursor-pointer rounded-xl overflow-hidden bg-card border border-border w-full"
-                >
-                  <img
-                    src={artwork.hero}
-                    alt={artwork.title}
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  {/* Hover overlay */}
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors duration-300 flex items-end p-4">
-                    <div className="translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                      <p className="text-white font-semibold text-sm">{artwork.title}</p>
-                      <p className="text-white/60 text-xs mt-0.5">{artwork.supporting.length + 1} images</p>
-                    </div>
-                  </div>
-                </button>
+                <figure key={artwork.id}>
+                  <button
+                    type="button"
+                    onClick={() => setActiveArtwork(artwork)}
+                    aria-label={`Open artwork: ${artwork.title}`}
+                    className="group relative block aspect-square w-full overflow-hidden rounded-xl border border-border bg-secondary"
+                  >
+                    <img
+                      src={artwork.hero}
+                      alt={artwork.title}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <span className="absolute bottom-3 right-3 rounded-full bg-black/60 px-2.5 py-1 text-xs text-white">
+                      {artwork.supporting.length + 1} images
+                    </span>
+                  </button>
+                  <figcaption className="mt-3">
+                    <p className="font-semibold">{artwork.title}</p>
+                    <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{artwork.description}</p>
+                  </figcaption>
+                </figure>
               ))}
             </div>
           </div>
         </section>
 
         {/* CTA */}
-        <section className="py-16 px-4 text-center">
-          <div className="container mx-auto max-w-xl">
-            <h2 className="text-2xl font-bold mb-3">Let's Build Something</h2>
-            <p className="text-muted-foreground mb-6 text-sm">Open to internships, collaborations, and interesting engineering problems.</p>
-            <a href={`mailto:${EMAIL}`} className="cosmic-button inline-flex items-center gap-2">
+        <section className="px-4 pb-20 pt-10">
+          <div className="panel mx-auto max-w-2xl p-8 text-center sm:p-10">
+            <h2 className="text-2xl font-bold md:text-3xl">Let's Build Something</h2>
+            <p className="mt-3 text-lg text-muted-foreground">Open to internships, collaborations, and interesting engineering problems.</p>
+            <a href={`mailto:${EMAIL}`} className="cosmic-button mt-7">
               <Mail className="h-4 w-4" /> Get In Touch
             </a>
           </div>

@@ -1,54 +1,54 @@
 import { ArrowDown } from "lucide-react"
 
+// First thing visitors see: who you are + the main actions
 export const HeroSection = () => {
-    return <section id="hero" 
-            className="relative min-h-screen flex flex-col items-center justify-center px-4"
-    >
-        <div className="container max-w-6xl mx-auto z-10">
-            <div className="grid md:grid-cols-2 grid-cols-1 gap-12 items-center">
+    return (
+        <section id="hero" className="relative flex min-h-[100svh] items-center px-4 pt-28 pb-24">
+            <div className="container relative z-10 mx-auto max-w-6xl">
+                <div className="grid items-center gap-8 md:grid-cols-[1.3fr_1fr] md:gap-12">
 
-                {/* Left — text + buttons */}
-                <div className="space-y-6 text-left">
-                    <p className="text-base font-semibold text-primary uppercase tracking-widest opacity-0 animate-fade-in">
-                        Electrical & Computer Engineer
-                    </p>
-                    <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight">
-                        <span className="opacity-0 animate-fade-in-delay-1">Hi, I'm </span>
-                        <span className="text-primary opacity-0 animate-fade-in-delay-1">Burakhan</span>
-                        <br />
-                        <span className="opacity-0 animate-fade-in-delay-2">Kokcu</span>
-                    </h1>
-                    <p className="text-lg font-medium leading-relaxed text-foreground/75 opacity-0 animate-fade-in-delay-3 border-l-4 border-primary pl-4">
-                        I'm an engineer who loves building things from the ground up. Passionate about embedded systems, hardware & software design, and using technology to solve problems that actually matter.
-                    </p>
-                    <div className="opacity-0 animate-fade-in-delay-4 flex flex-col sm:flex-row gap-3">
-                        <a href="#projects" className="cosmic-button">
-                            View my projects
-                        </a>
-                        <a href="#about" className="px-6 py-2 rounded-full border border-primary text-primary hover:bg-primary/10 transition-colors duration-300 font-medium text-center">
-                            About me
-                        </a>
+                    {/* Text panel */}
+                    <div className="panel p-7 opacity-0 animate-fade-in sm:p-10">
+                        <p className="section-label">Electrical & Computer Engineer</p>
+                        <h1 className="mt-4 text-4xl font-bold leading-[1.05] sm:text-5xl lg:text-6xl">
+                            Hi, I'm <span className="text-primary">Burakhan</span>
+                            <br />
+                            Kokcu
+                        </h1>
+                        <p className="mt-6 border-l-4 border-primary pl-4 text-lg leading-relaxed text-foreground/85 md:text-xl">
+                            I'm an engineer who loves building things from the ground up. Passionate about embedded systems, hardware & software design, and using technology to solve problems that actually matter.
+                        </p>
+                        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                            <a href="#projects" className="cosmic-button">
+                                View my projects
+                            </a>
+                            <a href="#about" className="outline-button">
+                                About me
+                            </a>
+                        </div>
                     </div>
-                </div>
 
-                {/* Right — headshot */}
-                <div className="hidden md:flex items-center justify-center">
-                    <div className="relative w-full max-w-sm aspect-square rounded-2xl overflow-hidden border-2 border-primary/30 shadow-xl">
-                        <img
-                            src="/brkhn.webp"
-                            alt="Burakhan Kokcu"
-                            className="w-full h-full object-cover"
-                        />
-                        <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-primary/10" />
+                    {/* Headshot (shown above the text on phones) */}
+                    <div className="order-first flex justify-center opacity-0 animate-fade-in-delay-1 md:order-none">
+                        <div className="relative aspect-square w-36 overflow-hidden rounded-2xl border-2 border-primary/30 shadow-xl sm:w-48 md:w-full md:max-w-sm">
+                            <img
+                                src="/brkhn.webp"
+                                alt="Burakhan Kokcu"
+                                className="h-full w-full object-cover"
+                            />
+                        </div>
                     </div>
-                </div>
 
+                </div>
             </div>
-        </div>
 
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
-            <span className="text-sm text-muted-foreground mb-2">Scroll</span>
-            <ArrowDown className="h-5 w-5 text-primary" />
-        </div>
-    </section>
+            <a
+                href="#about"
+                className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center rounded-full bg-card/80 px-3 py-2 text-sm text-muted-foreground backdrop-blur-sm animate-bounce md:flex"
+            >
+                Scroll
+                <ArrowDown className="h-4 w-4 text-primary" />
+            </a>
+        </section>
+    )
 }

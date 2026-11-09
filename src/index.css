@@ -1,6 +1,13 @@
 @import "tailwindcss";
 
+/* Make `dark:` classes follow the site's theme toggle (the .dark class), not the OS setting */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
   --color-border: hsl(var(--border));
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
@@ -14,8 +21,6 @@
   --color-secondary: hsl(var(--secondary));
   --color-secondary-foreground: hsl(var(--secondary-foreground));
 
-  --animate-float: float 6s ease-in-out infinite;
-  --animate-pulse-subtle: pulse-subtle 4s ease-in-out infinite;
   --animate-fade-in: fade-in 0.7s ease-out forwards;
   --animate-fade-in-delay-1: fade-in 0.7s ease-out 0.2s forwards;
   --animate-fade-in-delay-2: fade-in 0.7s ease-out 0.4s forwards;
@@ -23,24 +28,6 @@
   --animate-fade-in-delay-4: fade-in 0.7s ease-out 0.8s forwards;
   --animate-meteor: meteor 5s linear infinite;
 
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
-  }
-  @keyframes pulse-subtle {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.8;
-    }
-  }
   @keyframes fade-in {
     from {
       opacity: 0;
@@ -71,7 +58,7 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
+    --background: 150 16% 93%; /* pale green-grey, like a light solder mask */
     --foreground: 222 47% 11%;
 
     --card: 0 0% 100%;
@@ -79,9 +66,9 @@
     --primary: 211 95% 45%;
     --primary-foreground: 210 40% 98%;
 
-    --border: 214 32% 91%;
+    --border: 160 12% 84%;
 
-    --muted-foreground: 215 16% 40%;
+    --muted-foreground: 215 22% 30%;
     --secondary: 210 40% 94%;
     --secondary-foreground: 222 47% 20%;
   }
@@ -90,14 +77,14 @@
     --background: 222 47% 4%;
     --foreground: 213 31% 91%;
 
-    --card: 222 47% 8%;
+    --card: 222 40% 9%;
 
     --primary: 0 85% 65%;
     --primary-foreground: 213 31% 91%;
 
     --border: 217 33% 20%;
 
-    --muted-foreground: 215 20% 65%;
+    --muted-foreground: 215 20% 74%;
     --secondary: 217 33% 14%;
     --secondary-foreground: 213 31% 85%;
   }
@@ -111,8 +98,15 @@
   }
 
   body {
-    @apply bg-background text-foreground transition-colors duration-300;
+    @apply bg-background text-foreground font-sans antialiased transition-colors duration-300;
     font-feature-settings: "rlig" 1, "calt" 1;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.015em;
+    line-height: 1.2;
   }
 }
 
@@ -146,15 +140,29 @@
   @apply transition-transform duration-300 hover:scale-[1.02] hover:shadow-lg;
 }
 
-@utility gradient-border {
-  @apply relative rounded-md;
-  background: linear-gradient(to right, hsl(var(--card)), hsl(var(--card)));
-  background-clip: padding-box;
-  border: 1px solid transparent;
+/* Solid, slightly translucent surface that keeps text readable over the backgrounds */
+@utility panel {
+  @apply rounded-2xl border border-border bg-card/95 shadow-sm backdrop-blur-md;
+}
+
+/* Small monospace label above section headings */
+@utility section-label {
+  @apply font-mono text-xs font-medium uppercase tracking-[0.2em] text-primary;
+}
+
+@utility outline-button {
+  @apply inline-flex items-center justify-center gap-2 px-6 py-2 rounded-full border border-primary
+         bg-card/80 text-primary font-medium backdrop-blur-sm
+         transition-colors duration-300 hover:bg-primary/10;
+}
+
+@utility chip {
+  @apply inline-flex items-center px-3 py-1 rounded-md border border-border
+         bg-secondary text-secondary-foreground text-sm font-medium;
 }
 
 @utility cosmic-button {
-  @apply px-6 py-2 rounded-full bg-primary text-primary-foreground font-medium 
+  @apply inline-flex items-center justify-center gap-2 px-6 py-2 rounded-full bg-primary text-primary-foreground font-medium 
          transition-all duration-300 hover:shadow-[0_0_12px_hsl(var(--primary)/0.5)]
          hover:scale-105 active:scale-95;
 }
@@ -175,11 +183,10 @@
   max-width: 100%;
   margin: 0 auto;
   padding: 0;
-  text-align: center;
 }
 
 #star-bg {
-  background-color: hsl(0, 0%, 100%);
+  background-color: hsl(var(--background));
 }
 #star-bg .star {
   background-color: hsl(212, 72%, 56%);

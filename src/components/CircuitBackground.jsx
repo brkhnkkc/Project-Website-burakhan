@@ -192,6 +192,14 @@ export const CircuitBackground = () => {
             b.lineCap = "round";
             b.lineJoin = "round";
 
+            // Faint dot grid on every routing point (breadboard / graph-paper texture)
+            b.fillStyle = boardColor(0.22);
+            for (let c = 0; c < cols; c++) {
+                for (let r = 0; r < rows; r++) {
+                    b.fillRect(ox + c * GRID - 0.75, oy + r * GRID - 0.75, 1.5, 1.5);
+                }
+            }
+
             // Traces
             b.lineWidth = 2;
             b.strokeStyle = boardColor(0.16);

@@ -1,64 +1,95 @@
 import { ArrowRight, Pointer } from "lucide-react"
 import { Link } from "react-router-dom"
-import { projects } from "@/data/projects"
+import { cn } from "@/lib/utils"
+import { projects, categoryStyles } from "@/data/projects"
+import { SectionHeading } from "./SectionHeading"
 
+// Home page: each project as a row — picture on one side, name + description beside it
 export const ProjectsSection = () => {
-    return <section id="projects" className="py-24 px-4 relative">
-        <div className="container mx-auto max-w-5xl">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">
-                My <span className="text-primary">Projects</span>
-            </h2>
-            <div className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-                <p>Here are some of the recent projects I worked on.</p>
-                <p>
-                    <Pointer className="inline h-5 w-5" /> Click to see more.
-                </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {projects.map((project) => (
-                    <Link
-                        key={project.id}
-                        to={`/projects#${project.id}`}
-                        className="group bg-card rounded-lg overflow-hidden shadow-xs card-hover"
-                    >
-                        <div className="h-48 overflow-hidden">
-                            <img
-                                src={project.thumbnail}
-                                alt={project.title}
-                                loading="lazy"
-                                decoding="async"
-                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                            />
-                        </div>
-
-                        <div className="p-6">
-                            <div className="flex flex-wrap gap-2 mb-4">
-                                {project.tags.map((tag) => (
-                                    <span key={tag} className="px-2 py-1 text-xs font-medium border rounded-full bg-secondary text-secondary-foreground">
-                                        {tag}
-                                    </span>
-                                ))}
-                            </div>
-                            <h3 className="text-xl font-semibold mb-1">{project.title}</h3>
-                            <p className="text-muted-foreground text-sm line-clamp-3">
-                                {project.description}
+    return (
+        <section id="projects" className="relative scroll-mt-16 px-4 py-20 md:py-28">
+            <div className="container mx-auto max-w-6xl">
+                <SectionHeading
+                    label="Projects"
+                    intro={
+                        <>
+                            <p>Here are some of the recent projects I worked on.</p>
+                            <p className="mt-1 inline-flex items-center gap-1.5 text-base">
+                                <Pointer className="h-4 w-4" /> Click to see more.
                             </p>
-                        </div>
-                    </Link>
-                ))}
-            </div>
-
-            <div className="text-center mt-12">
-                <a
-                    href="https://www.linkedin.com/in/burakhankokcu/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="cosmic-button w-fit flex items-center mx-auto gap-2"
+                        </>
+                    }
                 >
-                    My LinkedIn <ArrowRight size={16} />
-                </a>
+                    My <span className="text-primary">Projects</span>
+                </SectionHeading>
+
+                <div className="space-y-8">
+                    {projects.map((project, i) => {
+                        const Icon = project.icon;
+                        const href = `/projects#${project.id}`;
+                        return (
+                            <article key={project.id} className="panel grid overflow-hidden md:grid-cols-2">
+                                {/* Picture (alternates sides on desktop) */}
+                                <Link
+                                    to={href}
+                                    className={cn(
+                                        "group block aspect-[4/3] overflow-hidden bg-secondary md:aspect-auto md:min-h-[340px]",
+                                        i % 2 === 1 && "md:order-last"
+                                    )}
+                                    aria-label={`See ${project.title}`}
+                                >
+                                    <img
+                                        src={project.thumbnail}
+                                        alt={project.title}
+                                        loading="lazy"
+                                        decoding="async"
+                                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                    />
+                                </Link>
+
+                                {/* Name + description */}
+                                <div className="flex flex-col p-7 md:p-9">
+                                    <span className={cn("inline-flex w-fit items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium", categoryStyles[project.category])}>
+                                        <Icon className="h-3.5 w-3.5" />
+                                        {project.category}
+                                    </span>
+                                    <h3 className="mt-4 text-2xl font-bold md:text-3xl">
+                                        <Link to={href} className="transition-colors hover:text-primary">
+                                            {project.title}
+                                        </Link>
+                                    </h3>
+                                    <p className="mt-1 font-medium text-primary">{project.subtitle}</p>
+                                    <p className="mt-4 leading-relaxed text-muted-foreground">{project.description}</p>
+
+                                    <div className="mt-5 flex flex-wrap gap-2">
+                                        {project.tags.map((tag) => (
+                                            <span key={tag} className="chip">{tag}</span>
+                                        ))}
+                                    </div>
+
+                                    <Link
+                                        to={href}
+                                        className="mt-auto inline-flex items-center gap-2 self-start pt-7 font-semibold text-primary hover:underline"
+                                    >
+                                        See full project <ArrowRight className="h-4 w-4" />
+                                    </Link>
+                                </div>
+                            </article>
+                        );
+                    })}
+                </div>
+
+                <div className="mt-12 text-center">
+                    <a
+                        href="https://www.linkedin.com/in/burakhankokcu/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="cosmic-button"
+                    >
+                        My LinkedIn <ArrowRight size={16} />
+                    </a>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    )
 }

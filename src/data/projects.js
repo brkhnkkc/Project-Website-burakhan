@@ -1,7 +1,14 @@
 import { Cpu, Zap, Code2 } from "lucide-react";
 
+// Badge colours per project category (readable in light and dark mode)
+export const categoryStyles = {
+  Hardware: "bg-cyan-500/10 text-cyan-700 dark:text-cyan-300 border-cyan-500/30",
+  Robotics: "bg-orange-500/10 text-orange-700 dark:text-orange-300 border-orange-500/30",
+  Software: "bg-violet-500/10 text-violet-700 dark:text-violet-300 border-violet-500/30",
+};
+
 // Single source of truth for projects.
-// Used by the home page cards (ProjectsSection) and the full Projects page.
+// Used by the home page (ProjectsSection) and the full Projects page.
 export const projects = [
   {
     id: "spark-logic-kit",
