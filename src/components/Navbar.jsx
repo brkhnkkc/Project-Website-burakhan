@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { ThemeToggle } from "./ThemeToggle";
 
 const navItems = [
   { name: "Home", href: "#hero", type: "anchor" },
@@ -21,26 +22,26 @@ export const Navbar = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const renderNavItem = (item, key, onClick) => {
+  const renderNavItem = (item, onClick) => {
     const className =
       "text-foreground/80 hover:text-primary transition-colors duration-300";
 
-    // Anchor links only work on home page
+    // Section links (#about, #skills...)
     if (item.type === "anchor") {
       if (isHome) {
         return (
-          <a key={key} href={item.href} className={className} onClick={onClick}>
+          <a key={item.name} href={item.href} className={className} onClick={onClick}>
             {item.name}
           </a>
         );
       }
-      // On other pages, clicking "Home" anchor items goes back to home
+      // On other pages, go back to the home page and jump to that section
       return (
-        <Link key={key} to="/" className={className} onClick={onClick}>
+        <Link key={item.name} to={`/${item.href}`} className={className} onClick={onClick}>
           {item.name}
         </Link>
       );
@@ -48,7 +49,7 @@ export const Navbar = () => {
 
     // Route links
     return (
-      <Link key={key} to={item.href} className={cn(className, location.pathname === item.href && "text-primary font-medium")} onClick={onClick}>
+      <Link key={item.name} to={item.href} className={cn(className, location.pathname === item.href && "text-primary font-medium")} onClick={onClick}>
         {item.name}
       </Link>
     );
@@ -69,24 +70,29 @@ export const Navbar = () => {
           to="/"
         >
           <span className="relative z-10">
-            <span className="text-glow text-foreground">BurakhanKokcu</span>{" "}
+            <span className="text-glow text-foreground">Burakhan Kokcu</span>{" "}
             Portfolio
           </span>
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden md:flex space-x-8">
-          {navItems.map((item, key) => renderNavItem(item, key, undefined))}
+        <div className="hidden md:flex items-center space-x-8">
+          {navItems.map((item) => renderNavItem(item, undefined))}
+          <ThemeToggle />
         </div>
 
-        {/* Mobile toggle */}
-        <button
-          onClick={() => setIsMenuOpen((prev) => !prev)}
-          className="md:hidden p-2 text-foreground z-50"
-          aria-label={isMenuOpen ? "Close Menu" : "Open Menu"}
-        >
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        {/* Mobile: theme toggle + menu button */}
+        <div className="md:hidden flex items-center gap-1 z-50">
+          <ThemeToggle />
+          <button
+            onClick={() => setIsMenuOpen((prev) => !prev)}
+            className="p-2 text-foreground"
+            aria-label={isMenuOpen ? "Close Menu" : "Open Menu"}
+            aria-expanded={isMenuOpen}
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
 
         {/* Mobile menu */}
         <div
@@ -99,9 +105,7 @@ export const Navbar = () => {
           )}
         >
           <div className="flex flex-col space-y-8 text-xl">
-            {navItems.map((item, key) =>
-              renderNavItem(item, key, () => setIsMenuOpen(false))
-            )}
+            {navItems.map((item) => renderNavItem(item, () => setIsMenuOpen(false)))}
           </div>
         </div>
       </div>

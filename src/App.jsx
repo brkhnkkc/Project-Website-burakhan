@@ -3,19 +3,19 @@ import { Home } from "./Pages/Home"
 import { NotFound } from "./Pages/NotFound"
 import { ProjectsPage } from "./Pages/ProjectsPage"
 import { PersonalPage } from "./Pages/PersonalPage"
+import { ScrollToTop } from "./components/ScrollToTop"
 
 function App() {
   return (
-    <>
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
-        <Route index element={<Home />}/>
-         <Route path="/projects" element={<ProjectsPage />} />
+        <Route index element={<Home />} />
+        <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/personal" element={<PersonalPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
-    </>
   )
 }
 

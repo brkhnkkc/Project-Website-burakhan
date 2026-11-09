@@ -10,6 +10,10 @@
 
   --color-card: hsl(var(--card));
 
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
   --animate-float: float 6s ease-in-out infinite;
   --animate-pulse-subtle: pulse-subtle 4s ease-in-out infinite;
   --animate-fade-in: fade-in 0.7s ease-out forwards;
@@ -76,6 +80,10 @@
     --primary-foreground: 210 40% 98%;
 
     --border: 214 32% 91%;
+
+    --muted-foreground: 215 16% 40%;
+    --secondary: 210 40% 94%;
+    --secondary-foreground: 222 47% 20%;
   }
 
   .dark {
@@ -88,6 +96,10 @@
     --primary-foreground: 213 31% 91%;
 
     --border: 217 33% 20%;
+
+    --muted-foreground: 215 20% 65%;
+    --secondary: 217 33% 14%;
+    --secondary-foreground: 213 31% 85%;
   }
 
   * {
@@ -127,7 +139,7 @@
 
 @utility text-glow {
   @apply relative;
-  text-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
+  text-shadow: 0 0 10px hsl(var(--primary) / 0.5);
 }
 
 @utility card-hover {
@@ -143,7 +155,7 @@
 
 @utility cosmic-button {
   @apply px-6 py-2 rounded-full bg-primary text-primary-foreground font-medium 
-         transition-all duration-300 hover:shadow-[0_0_10px_rgba(139,92,246,0.5)]
+         transition-all duration-300 hover:shadow-[0_0_12px_hsl(var(--primary)/0.5)]
          hover:scale-105 active:scale-95;
 }
 
@@ -187,7 +199,7 @@
   border-radius: 50%;
   background-color: hsl(188, 100%, 85%);
   box-shadow: 0 0 6px 2px hsla(188, 100%, 70%, 0.4);
-  animation: drift 3s ease-in forwards;
+  animation: drift 3s ease-in infinite;
 }
 
 @keyframes drift {
@@ -201,9 +213,16 @@
   50%       { opacity: 0.2; transform: scale(0.6); }
 }
 
-@keyframes star-life {
-  0%   { opacity: 0; transform: scale(0); }
-  20%  { opacity: 1; transform: scale(1); }
-  80%  { opacity: 1; transform: scale(1); }
-  100% { opacity: 0; transform: scale(0); }
+/* Respect the "reduce motion" accessibility setting */
+@media (prefers-reduced-motion: reduce) {
+  .light-star,
+  .dark #star-bg .star {
+    animation: none;
+  }
+  .meteor {
+    display: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
 }

@@ -1,6 +1,10 @@
-import { ArrowLeft, MapPin, GraduationCap, Heart, Coffee, BookOpen, ExternalLink, Mail, X, ChevronLeft, ChevronRight } from "lucide-react";
-import { Link } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
+import { MapPin, GraduationCap, Heart, Coffee, BookOpen, ExternalLink, Mail } from "lucide-react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { Lightbox } from "@/components/Lightbox";
+import { PageHeader } from "@/components/PageHeader";
+
+const EMAIL = "kokcuburakhan@gmail.com";
+const LINKEDIN = "https://www.linkedin.com/in/burakhankokcu/";
 
 // ── Gradient blob background ──────────────────────────────────────────────────
 const BlobBackground = () => {
@@ -18,6 +22,9 @@ const BlobBackground = () => {
     };
     resize();
     window.addEventListener("resize", resize);
+
+    // Respect the "reduce motion" accessibility setting: draw once, don't animate
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const blobs = [
       { x: 0.2, y: 0.3, r: 0.35, dx: 0.00012, dy: 0.00008, color: [100, 160, 255] },
@@ -51,7 +58,7 @@ const BlobBackground = () => {
         ctx.fill();
       });
 
-      animFrame = requestAnimationFrame(draw);
+      if (!reduceMotion) animFrame = requestAnimationFrame(draw);
     };
     draw();
 
@@ -82,7 +89,7 @@ const timeline = [
   { year: "2025", title: "Spark Logic Kit", description: "Designed and built a complete STEM education kit from PCB to 3D-printed enclosure.", type: "project" },
   { year: "2024", title: "Wi-Fi Smart Car", description: "Built a fully custom Wi-Fi-controlled vehicle with autonomous modes and obstacle detection.", type: "project" },
   { year: "2023", title: "Started My Computer Engineering Journey", description: "Began diving deep into microcontrollers, circuit design, and embedded programming.", type: "milestone" },
-  { year: "2022", title: "Started My Electrical Engineering Journey", description: "Began diving deep into , circuit design, .", type: "milestone" },
+  { year: "2022", title: "Started My Electrical Engineering Journey", description: "Began diving deep into circuit analysis, electronics, and circuit design.", type: "milestone" },
 ];
 
 const typeColors = {
@@ -91,132 +98,43 @@ const typeColors = {
   milestone: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
 };
 
-// ── Artwork — replace src/hero/supporting with your actual image paths ────────
+// ── Artwork ───────────────────────────────────────────────────────────────────
+// Images live in public/projects/digart/. Unused ones you can add here later:
+// night, bombincity, explosionTest (+ explostiontestBtts), minecraftHB, minecraftTestNight2
 const artworks = [
   {
     id: 1,
     title: "Atmospheric Doggo",
-    hero: "/projects/digart/atmospheric440.png",
-    supporting: ["/projects/digart/atmosphericBTS.png", "/projects/digart/atmosphericBTS1.png", "/projects/digart/atmosphericBTS2.png"],
+    hero: "/projects/digart/atmospheric440.webp",
+    supporting: ["/projects/digart/atmosphericBTS.webp", "/projects/digart/atmosphericBTS1.webp", "/projects/digart/atmosphericBTS2.webp"],
     description: "Chatting Turtle. Inspired by leaves flying in the wind during a foggy night.",
   },
   {
     id: 2,
-    title: "Artwork Title 2",
-    hero: "/projects/digart/brokenWall4.png",
-    supporting: ["/projects/digart/brokenWall.png", "/projects/digart/brokenWallBTS.png"],
+    title: "Broken Wall",
+    hero: "/projects/digart/brokenWall4.webp",
+    supporting: ["/projects/digart/brokenWall.webp", "/projects/digart/brokenWallBTS.webp"],
     description: "A Broken Wall. Symbolizes the act of breaking walls in order to achieve success (to be free).",
   },
   {
     id: 3,
-    title: "Artwork Title 3",
-    hero: "/projects/digart/planet1440.png",
-    supporting: ["/projects/digart/generatedPlanet2.png", "/art/art3_b.jpg", "/art/art3_c.jpg"],
-    description: "A short description of this piece and what inspired it.",
-  },
-  {
-    id: 4,
-    title: "Artwork Title 4",
-    hero: "/art/art4_hero.jpg",
-    supporting: ["/art/art4_a.jpg", "/art/art4_b.jpg"],
-    description: "A short description of this piece and what inspired it.",
-  },
-  {
-    id: 5,
-    title: "Artwork Title 5",
-    hero: "/art/art5_hero.jpg",
-    supporting: ["/art/art5_a.jpg"],
-    description: "A short description of this piece and what inspired it.",
-  },
-  {
-    id: 6,
-    title: "Artwork Title 6",
-    hero: "/art/art6_hero.jpg",
-    supporting: ["/art/art6_a.jpg", "/art/art6_b.jpg"],
-    description: "A short description of this piece and what inspired it.",
+    title: "Generated Planet",
+    hero: "/projects/digart/planet1440.webp",
+    supporting: ["/projects/digart/generatedPlanet2.webp"],
+    description: "A procedurally generated planet.",
   },
 ];
 
-// ── Artwork viewer ────────────────────────────────────────────────────────────
-const ArtworkViewer = ({ artwork, onClose }) => {
-  const allImages = [artwork.hero, ...artwork.supporting];
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === "Escape") onClose();
-      if (e.key === "ArrowLeft")
-        setActiveIndex(i => (i - 1 + allImages.length) % allImages.length);
-      if (e.key === "ArrowRight")
-        setActiveIndex(i => (i + 1) % allImages.length);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [artwork, onClose, allImages.length]);
-
-  const prev = (e) => { e.stopPropagation(); setActiveIndex(i => (i - 1 + allImages.length) % allImages.length); };
-  const next = (e) => { e.stopPropagation(); setActiveIndex(i => (i + 1) % allImages.length); };
-
-  return (
-    <div
-      className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
-      onClick={onClose}
-    >
-      {/* Close */}
-      <button onClick={onClose} className="absolute top-5 right-5 p-2 text-white/60 hover:text-white transition-colors z-10">
-        <X className="h-6 w-6" />
-      </button>
-
-      {/* Prev */}
-      {allImages.length > 1 && (
-        <button onClick={prev} className="absolute left-4 p-2 text-white/70 hover:text-white transition-colors z-10">
-          <ChevronLeft className="h-8 w-8" />
-        </button>
-      )}
-
-      {/* Main image */}
-      <img
-        src={allImages[activeIndex]}
-        alt={artwork.title}
-        className="max-h-[85vh] max-w-[85vw] object-contain rounded-lg shadow-2xl"
-        onClick={e => e.stopPropagation()}
-      />
-
-      {/* Next */}
-      {allImages.length > 1 && (
-        <button onClick={next} className="absolute right-4 p-2 text-white/70 hover:text-white transition-colors z-10">
-          <ChevronRight className="h-8 w-8" />
-        </button>
-      )}
-
-      {/* Bottom info */}
-      <div className="absolute bottom-4 flex flex-col items-center gap-1.5">
-        <p className="text-white/90 text-sm bg-black/40 px-4 py-1.5 rounded-full backdrop-blur-sm">
-          {artwork.title}
-        </p>
-        <span className="text-white/50 text-xs">{activeIndex + 1} / {allImages.length}</span>
-      </div>
-    </div>
-  );
-};
 // ── Page ──────────────────────────────────────────────────────────────────────
 export const PersonalPage = () => {
   const [activeArtwork, setActiveArtwork] = useState(null);
+  const closeArtwork = useCallback(() => setActiveArtwork(null), []);
 
   return (
     <div className="min-h-screen bg-background text-foreground relative overflow-x-hidden">
       <BlobBackground />
 
-      {/* Header */}
-      <div className="border-b border-border sticky top-0 bg-background/70 backdrop-blur-md z-30">
-        <div className="container mx-auto max-w-5xl px-4 py-4 flex items-center gap-4">
-          <Link to="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors duration-200">
-            <ArrowLeft className="h-4 w-4" /> Back
-          </Link>
-          <span className="text-border">|</span>
-          <span className="font-semibold text-lg">About Me</span>
-        </div>
-      </div>
+      <PageHeader title="About Me" />
 
       {/* Content — sits above blobs */}
       <div className="relative z-10">
@@ -232,24 +150,24 @@ export const PersonalPage = () => {
               <h1 className="text-4xl md:text-5xl font-bold mb-3">
                 Burakhan <span className="text-primary">Kokcu</span>
               </h1>
-              <p className="text-lg text-muted-foreground mb-6">Electrical & Computer Engineering Student</p>
+              <p className="text-lg text-muted-foreground mb-6">Electrical & Computer Engineer</p>
               <p className="text-muted-foreground leading-relaxed max-w-xl">
                 I'm an engineer who loves building things from the ground up — from schematic to silkscreen,
                 from firmware to front panel. I'm passionate about embedded systems, hardware design, and
                 using technology to solve problems that actually matter.
               </p>
               <div className="flex flex-wrap gap-3 mt-6">
-                <a href="mailto:your@email.com" className="flex items-center gap-2 cosmic-button">
+                <a href={`mailto:${EMAIL}`} className="flex items-center gap-2 cosmic-button">
                   <Mail className="h-4 w-4" /> Contact Me
                 </a>
-                <a href="#" target="_blank" rel="noreferrer"
+                <a href={LINKEDIN} target="_blank" rel="noreferrer"
                   className="flex items-center gap-2 px-5 py-2 rounded-full border border-primary text-primary hover:bg-primary/10 transition-colors duration-300 text-sm font-medium">
                   <ExternalLink className="h-4 w-4" /> LinkedIn
                 </a>
               </div>
             </div>
-            <div className="w-40 h-40 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto">
-              <span className="text-5xl">👨‍💻</span>
+            <div className="w-40 h-40 rounded-2xl overflow-hidden border-2 border-primary/30 shadow-lg mx-auto">
+              <img src="/brkhn.webp" alt="Burakhan Kokcu" className="w-full h-full object-cover" />
             </div>
           </div>
         </section>
@@ -330,15 +248,19 @@ export const PersonalPage = () => {
           <p className="text-sm text-muted-foreground mb-8 text-center">Click any piece to explore it in detail.</p>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 w-full">
               {artworks.map((artwork) => (
-                <div
+                <button
+                  type="button"
                   key={artwork.id}
                   onClick={() => setActiveArtwork(artwork)}
+                  aria-label={`Open artwork: ${artwork.title}`}
                   style={{ aspectRatio: "1/1" }}
                   className="relative group cursor-pointer rounded-xl overflow-hidden bg-card border border-border w-full"
                 >
                   <img
                     src={artwork.hero}
                     alt={artwork.title}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   {/* Hover overlay */}
@@ -348,7 +270,7 @@ export const PersonalPage = () => {
                       <p className="text-white/60 text-xs mt-0.5">{artwork.supporting.length + 1} images</p>
                     </div>
                   </div>
-                </div>
+                </button>
               ))}
             </div>
           </div>
@@ -359,7 +281,7 @@ export const PersonalPage = () => {
           <div className="container mx-auto max-w-xl">
             <h2 className="text-2xl font-bold mb-3">Let's Build Something</h2>
             <p className="text-muted-foreground mb-6 text-sm">Open to internships, collaborations, and interesting engineering problems.</p>
-            <a href="mailto:your@email.com" className="cosmic-button inline-flex items-center gap-2">
+            <a href={`mailto:${EMAIL}`} className="cosmic-button inline-flex items-center gap-2">
               <Mail className="h-4 w-4" /> Get In Touch
             </a>
           </div>
@@ -369,7 +291,11 @@ export const PersonalPage = () => {
 
       {/* Artwork viewer modal */}
       {activeArtwork && (
-        <ArtworkViewer artwork={activeArtwork} onClose={() => setActiveArtwork(null)} />
+        <Lightbox
+          images={[activeArtwork.hero, ...activeArtwork.supporting]}
+          title={activeArtwork.title}
+          onClose={closeArtwork}
+        />
       )}
     </div>
   );

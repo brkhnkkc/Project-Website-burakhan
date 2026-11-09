@@ -1,44 +1,56 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
+
+// ── Random generators (pure functions, run once per mount/resize) ─────────────
+const makeStars = () => {
+    const count = Math.floor((window.innerWidth * window.innerHeight) / 10000);
+    return Array.from({ length: count }, (_, i) => ({
+        id: i,
+        size: Math.random() * 3 + 1,
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        opacity: Math.random() * 0.5 + 0.5,
+        animationDuration: Math.random() * 4 + 2,
+    }));
+};
+
+const makeMeteors = () =>
+    Array.from({ length: 4 }, (_, i) => ({
+        id: i,
+        size: Math.random() * 2 + 1,
+        x: Math.random() * 100,
+        y: Math.random() * 20,
+        delay: Math.random() * 10,
+        animationDuration: Math.random() * 3 + 3,
+    }));
+
+// Light mode: a fixed set of sparkles that loop forever with CSS.
+// (Previously 15 new elements were added every 100ms, re-rendering 10x per second.)
+const LIGHT_STAR_COUNT = 250;
+const LIGHT_STAR_CYCLE = 3; // seconds, matches the `drift` animation
+const makeLightStars = () =>
+    Array.from({ length: LIGHT_STAR_COUNT }, (_, i) => ({
+        id: i,
+        size: Math.random() * 4 + 2,
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        // Negative delay = start part-way through, so the sky is already full on load
+        delay: -Math.random() * LIGHT_STAR_CYCLE,
+    }));
+
+const isDarkNow = () => document.documentElement.classList.contains("dark");
 
 export const StarBackground = () => {
-    const [stars, setStars] = useState([]);
-    const [meteors, setMeteors] = useState([]);
-    const [lightStars, setLightStars] = useState([]);
-    const [isDark, setIsDark] = useState(false);
-    const [meteorsReady, setMeteorsReady] = useState(false);
-    const nextId = useRef(0);
+    const [isDark, setIsDark] = useState(isDarkNow);
+    const [stars, setStars] = useState(makeStars);
+    const [meteors] = useState(makeMeteors);
+    const [lightStars] = useState(makeLightStars);
 
     useEffect(() => {
-        // Read theme after mount when DOM is fully available
-        const dark = document.documentElement.classList.contains("dark");
-        setIsDark(dark);
-
-        generateStars();
-
-        // Generate meteors and only show them after a short delay
-        // so their animationDelay is respected from the start
-        const newMeteors = [];
-        for (let i = 0; i < 4; i++) {
-            newMeteors.push({
-                id: i,
-                size: Math.random() * 2 + 1,
-                x: Math.random() * 100,
-                y: Math.random() * 20,
-                delay: Math.random() * 10,
-                animationDuration: Math.random() * 3 + 3,
-            });
-        }
-        setMeteors(newMeteors);
-
-        // Small delay before showing meteors so CSS animation delay works correctly
-        setTimeout(() => setMeteorsReady(true), 100);
-
-        const handleResize = () => generateStars();
+        const handleResize = () => setStars(makeStars());
         window.addEventListener("resize", handleResize);
 
-        const observer = new MutationObserver(() => {
-            setIsDark(document.documentElement.classList.contains("dark"));
-        });
+        // Follow theme changes made by the toggle
+        const observer = new MutationObserver(() => setIsDark(isDarkNow()));
         observer.observe(document.documentElement, {
             attributes: true,
             attributeFilter: ["class"],
@@ -50,51 +62,8 @@ export const StarBackground = () => {
         };
     }, []);
 
-    // Light mode spawning stars
-    useEffect(() => {
-        const interval = setInterval(() => {
-            if (document.documentElement.classList.contains("dark")) return;
-
-            const batch = [];
-            for (let i = 0; i < 15; i++) {
-                batch.push({
-                    id: nextId.current++,
-                    size: Math.random() * 4 + 2,
-                    x: Math.random() * 100,
-                    y: Math.random() * 100,
-                });
-            }
-
-            setLightStars(prev => [...prev, ...batch]);
-
-            setTimeout(() => {
-                const ids = new Set(batch.map(s => s.id));
-                setLightStars(prev => prev.filter(s => !ids.has(s.id)));
-            }, 3000);
-
-        }, 100);
-
-        return () => clearInterval(interval);
-    }, []);
-
-    const generateStars = () => {
-        const numberOfStars = Math.floor((window.innerWidth * window.innerHeight) / 10000);
-        const newStars = [];
-        for (let i = 0; i < numberOfStars; i++) {
-            newStars.push({
-                id: i,
-                size: Math.random() * 3 + 1,
-                x: Math.random() * 100,
-                y: Math.random() * 100,
-                opacity: Math.random() * 0.5 + 0.5,
-                animationDuration: Math.random() * 4 + 2,
-            });
-        }
-        setStars(newStars);
-    };
-
     return (
-        <div id="star-bg" className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div id="star-bg" className="fixed inset-0 overflow-hidden pointer-events-none z-0" aria-hidden="true">
 
             {isDark && stars.map((star) => (
                 <div key={star.id} className="star" style={{
@@ -107,7 +76,7 @@ export const StarBackground = () => {
                 }}/>
             ))}
 
-            {isDark && meteorsReady && meteors.map((meteor) => (
+            {isDark && meteors.map((meteor) => (
                 <div key={meteor.id} className="meteor animate-meteor absolute" style={{
                     width: meteor.size * 40 + "px",
                     height: meteor.size + "px",
@@ -124,6 +93,7 @@ export const StarBackground = () => {
                     height: star.size + "px",
                     left: star.x + "%",
                     top: star.y + "%",
+                    animationDelay: star.delay + "s",
                 }}/>
             ))}
 

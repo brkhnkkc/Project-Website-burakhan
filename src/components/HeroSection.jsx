@@ -35,7 +35,7 @@ export const HeroSection = () => {
                 <div className="hidden md:flex items-center justify-center">
                     <div className="relative w-full max-w-sm aspect-square rounded-2xl overflow-hidden border-2 border-primary/30 shadow-xl">
                         <img
-                            src="/brkhn.jpeg"
+                            src="/brkhn.webp"
                             alt="Burakhan Kokcu"
                             className="w-full h-full object-cover"
                         />

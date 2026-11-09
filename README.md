@@ -1,16 +1,30 @@
-# React + Vite
+# Burakhan Kokcu — Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal portfolio website: [burakhankokcu.com](https://burakhankokcu.com/)
 
-Currently, two official plugins are available:
+Built with React, Vite, Tailwind CSS v4 and React Router, hosted on Netlify.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Running locally
 
-## React Compiler
+```bash
+npm install
+npm run dev      # start the dev server at http://localhost:5173
+npm run build    # production build into dist/
+npm run lint     # check the code with ESLint
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Where things live
 
-## Expanding the ESLint configuration
+| Path | What it is |
+| --- | --- |
+| `src/Pages/` | One file per page: `Home`, `ProjectsPage`, `PersonalPage`, `NotFound` |
+| `src/components/` | Sections and shared pieces (navbar, lightbox, theme toggle, backgrounds) |
+| `src/data/projects.js` | **All project content.** Edit this to add or change projects; both the home page cards and the Projects page read from it |
+| `src/index.css` | Theme colours (light and dark) and custom utilities |
+| `public/` | Static files served as-is: images, résumé, `robots.txt`, `sitemap.xml` |
+| `public/_redirects` | Netlify rule that serves the app for every URL, so `/projects` and `/personal` work when opened directly |
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Adding images
+
+Keep images small: export them as **WebP, about 1920px on the longest side** (usually 100–400 KB).
+Full-resolution originals can go in `original-images/`, which is ignored by git and not published.
