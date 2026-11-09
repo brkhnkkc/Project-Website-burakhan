@@ -159,7 +159,7 @@ export const CircuitBackground = () => {
         // Colours are kept different from the page text (dark navy) and accents (blue)
         // so text stays readable when a pulse passes behind it.
         const BOARD_HSL = "215 22% 52%";   // slate grey: traces, vias, chips
-        const CURRENT_HSL = "155 92% 52%";  // copper/amber: the moving signal pulses
+        const CURRENT_HSL = "155 92% 52%";  // green: the moving signal pulses
         const boardColor = (a) => `hsl(${BOARD_HSL} / ${a})`;
         const currentColor = (a) => `hsl(${CURRENT_HSL} / ${a})`;
 
