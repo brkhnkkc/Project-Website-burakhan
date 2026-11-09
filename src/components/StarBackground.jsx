@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { CircuitBackground } from "./CircuitBackground";
 
 // ── Random generators (pure functions, run once per mount/resize) ─────────────
 const makeStars = () => {
@@ -23,27 +24,12 @@ const makeMeteors = () =>
         animationDuration: Math.random() * 3 + 3,
     }));
 
-// Light mode: a fixed set of sparkles that loop forever with CSS.
-// (Previously 15 new elements were added every 100ms, re-rendering 10x per second.)
-const LIGHT_STAR_COUNT = 250;
-const LIGHT_STAR_CYCLE = 3; // seconds, matches the `drift` animation
-const makeLightStars = () =>
-    Array.from({ length: LIGHT_STAR_COUNT }, (_, i) => ({
-        id: i,
-        size: Math.random() * 4 + 2,
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        // Negative delay = start part-way through, so the sky is already full on load
-        delay: -Math.random() * LIGHT_STAR_CYCLE,
-    }));
-
 const isDarkNow = () => document.documentElement.classList.contains("dark");
 
 export const StarBackground = () => {
     const [isDark, setIsDark] = useState(isDarkNow);
     const [stars, setStars] = useState(makeStars);
     const [meteors] = useState(makeMeteors);
-    const [lightStars] = useState(makeLightStars);
 
     useEffect(() => {
         const handleResize = () => setStars(makeStars());
@@ -87,15 +73,8 @@ export const StarBackground = () => {
                 }}/>
             ))}
 
-            {!isDark && lightStars.map((star) => (
-                <div key={star.id} className="light-star" style={{
-                    width: star.size + "px",
-                    height: star.size + "px",
-                    left: star.x + "%",
-                    top: star.y + "%",
-                    animationDelay: star.delay + "s",
-                }}/>
-            ))}
+            {/* Light mode: animated circuit board */}
+            {!isDark && <CircuitBackground />}
 
         </div>
     );

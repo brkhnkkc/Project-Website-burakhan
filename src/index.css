@@ -194,20 +194,6 @@
   animation: twinkle var(--duration, 5s) ease-in-out infinite;
 }
 
-.light-star {
-  position: absolute;
-  border-radius: 50%;
-  background-color: hsl(188, 100%, 85%);
-  box-shadow: 0 0 6px 2px hsla(188, 100%, 70%, 0.4);
-  animation: drift 3s ease-in infinite;
-}
-
-@keyframes drift {
-  0%   { opacity: 1; transform: translateY(0px) scale(0); }
-  10%  { opacity: 1; transform: translateY(0px) scale(1); }
-  100% { opacity: 1; transform: translateY(-69px) scale(1); }
-}
-
 @keyframes twinkle {
   0%, 100% { opacity: 1; transform: scale(1); }
   50%       { opacity: 0.2; transform: scale(0.6); }
@@ -215,7 +201,6 @@
 
 /* Respect the "reduce motion" accessibility setting */
 @media (prefers-reduced-motion: reduce) {
-  .light-star,
   .dark #star-bg .star {
     animation: none;
   }
